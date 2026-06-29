@@ -1431,11 +1431,7 @@
       document.body.style.overflow = '';
     }
 
-    function selectAcuerdo(id, el) {
-      document.querySelectorAll('.acuerdo-item').forEach(i => i.classList.remove('active'));
-      el.classList.add('active');
-      updatePreview();
-    }
+
 
     // ── Número a letra (pesos mexicanos) ──
     function numeroALetra(num) {
@@ -2108,7 +2104,36 @@ ${doc.innerHTML}
       document.querySelectorAll('.acuerdo-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
       currentAcuerdo = id;
-      if (id === 'exclusiva') { updatePreview(); return; }
+      if (id === 'exclusiva') {
+        // Restaurar el formulario de exclusiva si fue reemplazado por otro acuerdo
+        const formCol = document.getElementById('acuerdos-form-col');
+        if (!document.getElementById('f-asesor')) {
+          formCol.innerHTML = `
+            <div class="acuerdos-form-title" id="excl-form-title">Acuerdo de Renta</div>
+            <div class="acuerdos-form-sub">Completa los campos — la vista previa se actualiza en tiempo real.</div>
+            <div class="acuerdo-field"><label>TIPO DE ACUERDO</label><select id="f-tipo" onchange="updatePreview()"><option value="exclusiva">Exclusiva</option><option value="opcion">En Opción</option></select></div>
+            <div class="acuerdo-field"><label>NOMBRE DEL ASESOR</label><input type="text" id="f-asesor" placeholder="Ej. Juan García López" oninput="updatePreview()" /></div>
+            <div class="acuerdo-field"><label>NOMBRE DEL ARRENDADOR (CLIENTE)</label><input type="text" id="f-arrendador" placeholder="Nombre completo del propietario" oninput="updatePreview()" /></div>
+            <div class="acuerdo-field"><label>DIRECCIÓN DEL INMUEBLE</label><input type="text" id="f-inmueble" placeholder="Calle, número, colonia, alcaldía, CP" oninput="updatePreview()" /></div>
+            <div class="acuerdo-field"><label>MONTO MENSUAL DE RENTA (EN NÚMERO)</label><input type="number" id="f-monto" placeholder="Ej. 25000" oninput="updateMontoLetra(); updatePreview();" /></div>
+            <div class="monto-letra-display" id="monto-letra-display">El monto en letra aparecerá aquí automáticamente.</div>
+            <div class="acuerdo-field"><label>DOMICILIO DEL CLIENTE (ARRENDADOR)</label><input type="text" id="f-domicilio" placeholder="Dirección donde recibe notificaciones" oninput="updatePreview()" /></div>
+            <div class="acuerdo-field"><label>FECHA DEL ACUERDO</label><input type="date" id="f-fecha" oninput="updatePreview()" /></div>
+            <div id="excl-aviso" style="display:none;margin-top:14px;padding:10px 12px;background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;font-size:12px;color:#7B5800;line-height:1.5;"></div>
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button class="btn-download" style="margin-top:0;flex:1;" onclick="downloadPDF()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </button>
+              <button class="btn-download" style="margin-top:0;flex:1;background:linear-gradient(180deg,#2b5be8 0%,#1a3fbf 100%);box-shadow:0 4px 18px rgba(27,63,191,0.3);" onclick="downloadWord(false)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Word
+              </button>
+            </div>`;
+        }
+        updatePreview();
+        return;
+      }
       if (id === 'profeco') { initProfeco(); return; }
       const cfg = ACUERDOS_EXTRA[id];
       if (!cfg) return;
