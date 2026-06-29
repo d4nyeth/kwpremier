@@ -1187,9 +1187,44 @@
       display: flex !important;
       flex: 1;
       height: 100%;
+      overflow: hidden;
     }
     .acuerdos-overlay.open { display: flex !important; }
-    .acuerdos-topbar { display: none !important; }  /* El topbar se reemplaza con el header */
+    .acuerdos-topbar { display: none !important; }
+
+    /* ── Scroll fixes para página de contratos ── */
+    html, body { overflow: auto !important; height: auto !important; }
+    .contratos-page { min-height: 100vh; }
+    .contratos-body {
+      height: auto !important;
+      overflow: visible !important;
+      flex: 1;
+    }
+    .acuerdos-body {
+      overflow: visible !important;
+      height: auto !important;
+      display: grid;
+      grid-template-columns: 260px 1fr 1fr;
+      min-height: calc(100vh - 59px);
+    }
+    .acuerdos-sidebar {
+      overflow-y: auto !important;
+      max-height: calc(100vh - 59px);
+      position: sticky;
+      top: 0;
+    }
+    .acuerdos-form-col {
+      overflow-y: auto !important;
+      max-height: calc(100vh - 59px);
+      position: sticky;
+      top: 0;
+    }
+    .acuerdos-preview-col {
+      overflow-y: auto !important;
+      max-height: calc(100vh - 59px);
+      position: sticky;
+      top: 0;
+    }
   </style>
 </head>
 <body>
