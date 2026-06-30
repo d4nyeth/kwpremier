@@ -2571,6 +2571,10 @@ ${doc.innerHTML}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Descargar PDF completo (Contrato + Anexos)
           </button>
+          <button class="btn-download" style="margin-top:10px;background:linear-gradient(180deg,#2b5be8 0%,#1a3fbf 100%);box-shadow:0 4px 18px rgba(27,63,191,0.3);" onclick="downloadProfecoWord()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            🔒 Descargar Word (Admin)
+          </button>
         </div>
 
         <!-- Nav -->
@@ -3025,7 +3029,22 @@ ${doc.innerHTML}
     }
 
 
+    const ADMIN_PASS = 'kwpremier2025';
+
+    function downloadProfecoWord() {
+      const pass = prompt('Contraseña de administrador:');
+      if (pass !== ADMIN_PASS) {
+        alert('Contraseña incorrecta.');
+        return;
+      }
+      downloadProfecoPDFOrWord('word');
+    }
+
     function downloadProfecoPDF() {
+      downloadProfecoPDFOrWord('pdf');
+    }
+
+    function downloadProfecoPDFOrWord(mode) {
       const preview = document.getElementById('contrato-preview');
       if(!preview) return;
       const clone = preview.cloneNode(true);
@@ -3057,7 +3076,43 @@ ${doc.innerHTML}
   .profeco-page-break{page-break-before:always;padding-top:0.2cm;}
 </style></head>
 <body>${clone.innerHTML}</body></html>`);
-      win.document.close(); win.focus(); setTimeout(()=>{win.print();},600);
+      if (mode === 'word') {
+        // Para Word: mismo HTML pero con cabecera de Word
+        const htmlContent = `<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office'
+      xmlns:w='urn:schemas-microsoft-com:office:word'
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset='UTF-8'>
+<title>Contrato Compra Venta Residencial PROFECO</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
+<style>
+  body { font-family: Arial, sans-serif; font-size: 10pt; line-height: 1.4; color: #000; margin: 2cm; }
+  .doc-header img { height: 30pt; width: auto; }
+  .doc-titulo { text-align: center; font-weight: 700; font-size: 11pt; letter-spacing: 0.1em; margin: 0 0 8pt; text-decoration: underline; }
+  .doc-p { text-align: justify; margin-bottom: 4pt; font-size: 10pt; }
+  .doc-seccion { font-weight: 700; margin: 8pt 0 3pt; font-size: 10pt; text-decoration: underline; }
+  .doc-campo { font-weight: 700; border-bottom: 1px solid #000; }
+  .doc-firmas-wrap { margin-top: 20pt; }
+  .doc-firmas-row { display: flex; margin-bottom: 14pt; }
+  .doc-firma-col { flex: 1; text-align: center; font-size: 8.5pt; padding: 0 8pt; }
+  .doc-firma-linea-top { border-top: 1px solid #000; padding-top: 5pt; margin-top: 22pt; }
+  .doc-firma-bold { font-weight: 700; }
+  .profeco-page-break { page-break-before: always; padding-top: 0.5cm; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+  td { border: 1px solid #999; padding: 3pt; }
+</style>
+</head>
+<body>\${clone.innerHTML}</body></html>`;
+        const blob = new Blob([htmlContent], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Contrato_Compra_Venta_Residencial_PROFECO.doc';
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        win.document.close(); win.focus(); setTimeout(()=>{win.print();},600);
+      }
     }
 
 
