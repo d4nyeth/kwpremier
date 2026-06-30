@@ -1663,7 +1663,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Acuerdo Renta Exclusiva - ${asesor}</title>
+  <title> </title>
   <style>
     @page {
       size: Letter;
@@ -1804,7 +1804,7 @@ ${doc.innerHTML}
       xmlns:w='urn:schemas-microsoft-com:office:word'
       xmlns='http://www.w3.org/TR/REC-html40'>
 <head><meta charset='UTF-8'>
-<title>Acuerdo Renta ${esExclusiva?'Exclusiva':'En Opción'}</title>
+<title> </title>
 <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
 <style>
   body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.5;color:#000;margin:2cm;}
@@ -1979,7 +1979,7 @@ ${doc.innerHTML}
       return doc.body.innerHTML;
     }
 
-    const PRINT_STYLES_EXTRA = `@page{size:Letter;margin:1.5cm 2cm;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;font-size:9pt;line-height:1.4;color:#000;}.doc-header{margin-bottom:6pt;}.doc-header img{height:28pt;width:auto;}.doc-titulo{text-align:center;font-weight:700;font-size:10pt;letter-spacing:0.15em;margin:0 0 6pt;text-decoration:underline;}.doc-p{text-align:justify;margin-bottom:4pt;font-size:9pt;}.doc-seccion{font-weight:700;margin:8pt 0 3pt;font-size:9pt;text-decoration:underline;}.doc-lista{margin:3pt 0 5pt 18pt;}.doc-lista li{margin-bottom:3pt;font-size:9pt;}.doc-campo{font-weight:700;color:#000;border-bottom:1px solid #000;}.doc-campo.filled{border-bottom:none;}.doc-firmas-wrap{margin-top:20pt;}.doc-firmas-row{display:flex;gap:0;margin-bottom:14pt;}.doc-firma-col{flex:1;text-align:center;font-size:8.5pt;line-height:1.4;padding:0 8pt;}.doc-firma-linea-top{border-top:1px solid #000;padding-top:5pt;margin-top:22pt;}.doc-firma-bold{font-weight:700;}table{border-collapse:collapse;width:100%;font-size:9pt;}td{border:1px solid #999;padding:4pt;}`;
+    const PRINT_STYLES_EXTRA = `@page{size:Letter;margin:1.5cm 2cm;@bottom-right{content:counter(page)" de "counter(pages);font-family:Arial,sans-serif;font-size:7.5pt;color:#555;}}*{box-sizing:border-box;margin:0;padding:0;}html{-webkit-print-color-adjust:exact;}body{font-family:Arial,sans-serif;font-size:8.5pt;line-height:1.35;color:#000;}.doc-header{margin-bottom:5pt;}.doc-header img{height:26pt;width:auto;}.doc-titulo{text-align:center;font-weight:700;font-size:9.5pt;letter-spacing:0.15em;margin:0 0 5pt;text-decoration:underline;}.doc-p{text-align:justify;margin-bottom:3.5pt;font-size:8.5pt;}.doc-seccion{font-weight:700;margin:7pt 0 2.5pt;font-size:8.5pt;text-decoration:underline;}.doc-lista{margin:2.5pt 0 4pt 16pt;}.doc-lista li{margin-bottom:2.5pt;font-size:8.5pt;}.doc-campo{font-weight:700;color:#000;border-bottom:1px solid #000;}.doc-campo.filled{border-bottom:none;}.doc-firmas-wrap{margin-top:16pt;}.doc-firmas-row{display:flex;gap:0;margin-bottom:12pt;}.doc-firma-col{flex:1;text-align:center;font-size:8pt;line-height:1.4;padding:0 8pt;}.doc-firma-linea-top{border-top:1px solid #000;padding-top:4pt;margin-top:18pt;}.doc-firma-bold{font-weight:700;}table{border-collapse:collapse;width:100%;font-size:8.5pt;}td{border:1px solid #999;padding:3pt;}`;
 
     function downloadExtraPDF() {
       const id = currentAcuerdo; const cfg = ACUERDOS_EXTRA[id]; if (!cfg) return;
@@ -2822,25 +2822,29 @@ ${doc.innerHTML}
       win.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 <title> </title>
 <style>
-  @page{size:Letter;margin:1.5cm 2cm;}
-  @page { margin-header: 0; margin-footer: 0; }
-  head, header { display: none !important; }
+  @page{
+    size:Letter;
+    margin:1.5cm 2cm;
+    @bottom-right{content:counter(page)" de "counter(pages);font-family:Arial,sans-serif;font-size:7.5pt;color:#555;}
+  }
+  html{-webkit-print-color-adjust:exact;}
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:Arial,sans-serif;font-size:9pt;line-height:1.4;color:#000;}
-  .doc-header{margin-bottom:6pt;}
-  .doc-header img{height:28pt;width:auto;}
-  .doc-titulo{text-align:center;font-weight:700;font-size:10pt;letter-spacing:0.1em;margin:0 0 6pt;text-decoration:underline;}
-  .doc-p{text-align:justify;margin-bottom:4pt;font-size:9pt;}
-  .doc-seccion{font-weight:700;margin:8pt 0 3pt;font-size:9pt;text-decoration:underline;}
+  body{font-family:Arial,sans-serif;font-size:8.5pt;line-height:1.35;color:#000;}
+  .doc-header{margin-bottom:4pt;}
+  .doc-header img{height:26pt;width:auto;}
+  .doc-titulo{text-align:center;font-weight:700;font-size:9.5pt;letter-spacing:0.1em;margin:0 0 4pt;text-decoration:underline;}
+  .doc-p{text-align:justify;margin-bottom:3.5pt;font-size:8.5pt;}
+  .doc-seccion{font-weight:700;margin:7pt 0 2.5pt;font-size:8.5pt;text-decoration:underline;}
   .doc-campo{color:#000;border-bottom:1px solid #000;font-weight:700;}
-  .doc-firmas-wrap{margin-top:14pt;}
-  .doc-firmas-row{display:flex;gap:0;margin-bottom:10pt;}
+  .doc-firmas-wrap{margin-top:12pt;}
+  .doc-firmas-row{display:flex;gap:0;margin-bottom:8pt;}
   .doc-firma-col{flex:1;text-align:center;font-size:8pt;line-height:1.3;padding:0 6pt;}
-  .doc-firma-linea-top{border-top:1px solid #000;padding-top:4pt;margin-top:18pt;}
+  .doc-firma-linea-top{border-top:1px solid #000;padding-top:4pt;margin-top:16pt;}
   .doc-firma-bold{font-weight:700;}
   table{border-collapse:collapse;width:100%;font-size:8pt;}
   td{border:1px solid #999;padding:3pt;}
   .profeco-page-break{page-break-before:always;padding-top:0.2cm;}
+
 </style></head>
 <body>${clone.innerHTML}</body></html>`);
       if (mode === 'word') {
@@ -2850,7 +2854,7 @@ ${doc.innerHTML}
       xmlns:w='urn:schemas-microsoft-com:office:word'
       xmlns='http://www.w3.org/TR/REC-html40'>
 <head><meta charset='UTF-8'>
-<title>Contrato Compra Venta Residencial PROFECO</title>
+<title> </title>
 <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
 <style>
   body { font-family: Arial, sans-serif; font-size: 10pt; line-height: 1.4; color: #000; margin: 2cm; }
